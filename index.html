@@ -1,254 +1,721 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>LeadAI | The Future of Intelligence</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>LeadAI | Africa's AGI Powerhouse</title>
+  <!-- Google Fonts + Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #010314;
+      color: #f1f5f9;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
-body {
-  background: #020617;
-  color: #e2e8f0;
-  overflow-x: hidden;
-}
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-/* PARTICLE CANVAS */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
+    /* Global container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 30px;
+      position: relative;
+      z-index: 2;
+    }
 
-/* NAVBAR */
-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 40px;
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(12px);
-  background: rgba(2,6,23,0.6);
-}
+    /* Glassmorphic nav */
+    nav {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(16px);
+      background: rgba(1, 3, 20, 0.75);
+      z-index: 100;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    }
 
-nav h1 {
-  color: #3b82f6;
-}
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-nav a {
-  color: #94a3b8;
-  margin-left: 20px;
-  text-decoration: none;
-}
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #22c55e, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
 
-nav a:hover {
-  color: white;
-}
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
 
-/* HERO */
-.hero {
-  text-align: center;
-  padding: 160px 20px;
-}
+    .nav-links a {
+      color: #cbd5e6;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
 
-.hero h1 {
-  font-size: 56px;
-  background: linear-gradient(90deg, #3b82f6, #22c55e, #a855f7);
-  -webkit-background-clip: text;
-  color: transparent;
-}
+    .nav-links a:hover {
+      color: #3b82f6;
+      text-shadow: 0 0 8px #3b82f6;
+    }
 
-.hero p {
-  margin-top: 20px;
-  color: #94a3b8;
-}
+    .mobile-menu {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #94a3b8;
+    }
 
-.btn {
-  margin-top: 30px;
-  display: inline-block;
-  padding: 14px 30px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, #3b82f6, #22c55e);
-  text-decoration: none;
-  color: white;
-  transition: 0.3s;
-}
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(90deg, #2563eb, #16a34a);
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      display: inline-block;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    }
 
-.btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 30px #3b82f6;
-}
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px #3b82f6;
+    }
 
-/* SECTIONS */
-section {
-  padding: 100px 20px;
-  max-width: 1000px;
-  margin: auto;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: 1s;
-}
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #3b82f6;
+      padding: 10px 24px;
+      border-radius: 40px;
+      color: #3b82f6;
+      font-weight: 500;
+      transition: 0.2s;
+    }
 
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .btn-outline:hover {
+      background: rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 12px rgba(59,130,246,0.4);
+    }
 
-h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
-}
+    /* Hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 0;
+    }
 
-/* CARDS */
-.grid {
-  display: grid;
-  gap: 20px;
-}
+    .hero-content h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff, #3b82f6, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-.card {
-  background: rgba(15,23,42,0.6);
-  padding: 25px;
-  border-radius: 15px;
-  border: 1px solid #1e293b;
-  transition: 0.3s;
-}
+    .typing-text {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 20px 0;
+      color: #a5f3c3;
+    }
 
-.card:hover {
-  transform: translateY(-10px) scale(1.03);
-  border-color: #3b82f6;
-  box-shadow: 0 0 40px rgba(59,130,246,0.4);
-}
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
 
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 50px;
-  color: #64748b;
-}
-</style>
+    .stat-card {
+      background: rgba(15, 25, 45, 0.6);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      padding: 15px 25px;
+      border-left: 3px solid #3b82f6;
+    }
+
+    /* sections */
+    section {
+      padding: 90px 0;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 50px;
+      background: linear-gradient(120deg, #e0f2fe, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: rgba(10, 20, 40, 0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      padding: 28px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .product-card:hover {
+      transform: translateY(-12px);
+      border-color: #3b82f6;
+      box-shadow: 0 25px 40px -12px rgba(59,130,246,0.4);
+      background: rgba(15, 30, 55, 0.8);
+    }
+
+    .product-icon {
+      font-size: 2.8rem;
+      margin-bottom: 18px;
+      color: #3b82f6;
+    }
+
+    .traction-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: space-between;
+    }
+
+    .counter-item {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 28px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .counter-number {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #3b82f6;
+    }
+
+    .team-card {
+      background: rgba(20, 30, 50, 0.7);
+      border-radius: 24px;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .avatar-icon {
+      font-size: 4rem;
+      color: #60a5fa;
+    }
+
+    /* chart container */
+    .chart-container {
+      max-width: 550px;
+      margin: 30px auto;
+      background: rgba(2, 10, 28, 0.6);
+      padding: 20px;
+      border-radius: 32px;
+    }
+
+    footer {
+      padding: 50px 0;
+      text-align: center;
+      color: #7e8aa2;
+    }
+
+    @media (max-width: 800px) {
+      .nav-links {
+        display: none;
+      }
+      .mobile-menu {
+        display: block;
+      }
+      .nav-links.mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(1, 3, 20, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 30px;
+        gap: 20px;
+      }
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      .typing-text {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<canvas id="particles"></canvas>
+<canvas id="bgCanvas"></canvas>
 
 <nav>
-  <h1>LeadAI</h1>
-  <div>
-    <a href="#about">About</a>
-    <a href="#vision">Vision</a>
-    <a href="#projects">Projects</a>
+  <div class="nav-container">
+    <div class="logo">LEADAI</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#solutions">AI Solutions</a>
+      <a href="#traction">Traction</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#team">Team</a>
+      <a href="#contact" class="btn-outline" style="padding:8px 18px">Contact</a>
+    </div>
+    <div class="mobile-menu" id="mobileMenuBtn">
+      <i class="fas fa-bars"></i>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <h1>Engineering the Future of AI</h1>
-  <p>LeadAI is building next-generation intelligence systems for global impact.</p>
-  <a href="#about" class="btn">Enter</a>
-</div>
-
-<section id="about">
-  <h2>About</h2>
-  <p>
-    LeadAI is a bold initiative focused on artificial intelligence, innovation,
-    and the future of technology. Built from vision and ambition, it represents
-    the next wave of intelligent systems.
-  </p>
-</section>
-
-<section id="vision">
-  <h2>Vision</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>AI Innovation</h3>
-      <p>Advancing artificial intelligence beyond current limits.</p>
-    </div>
-    <div class="card">
-      <h3>Global Impact</h3>
-      <p>Solving real-world problems through intelligent systems.</p>
-    </div>
-    <div class="card">
-      <h3>Future Systems</h3>
-      <p>Designing scalable AI infrastructure for tomorrow.</p>
+<main>
+  <div class="container" id="home">
+    <div class="hero">
+      <div class="hero-content">
+        <span style="color:#3b82f6; font-weight:600;">🚀 Africa’s AGI Pioneer</span>
+        <h1>Engineering the <br>Intelligent Future</h1>
+        <div class="typing-text" id="typedLine"></div>
+        <p style="max-width:600px; color:#cbd5e6;">LeadAI builds modular Artificial General Intelligence (AGI) systems for healthcare, defense, mining, education — empowering African sovereignty through cutting-edge AI.</p>
+        <div style="margin-top: 30px; display: flex; gap: 20px; flex-wrap:wrap;">
+          <a href="#solutions" class="btn-primary">Explore AGI Ecosystem <i class="fas fa-arrow-right"></i></a>
+          <a href="#traction" class="btn-outline">$1.2M Monthly Revenue →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card"><i class="fas fa-chart-line"></i> <strong>42%</strong> MoM Growth</div>
+          <div class="stat-card"><i class="fas fa-microchip"></i> <strong>5+</strong> Active Nations</div>
+          <div class="stat-card"><i class="fas fa-shield-alt"></i> <strong>CyberSentinel</strong> Pilot Active</div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<section id="projects">
-  <h2>Projects</h2>
-  <div class="card">
-    <h3>LeadAI Platform</h3>
-    <p>A conceptual AI ecosystem for innovation and development.</p>
+  <!-- Solutions / Products (AGI modules) -->
+  <div class="container" id="solutions">
+    <section>
+      <h2 class="section-title"><i class="fas fa-cogs"></i> Core AGI & Industry Solutions</h2>
+      <div class="grid-3">
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-shield-virus"></i></div>
+          <h3>CyberSentinel</h3>
+          <p>AI-native cybersecurity framework with real-time threat detection, zero-trust architecture, and autonomous red-teaming. Deployed with national defense agencies.</p>
+          <span style="color:#22c55e;">✓ Sovereign AI Security</span>
+        </div>
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-hospital-user"></i></div>
+          <h3>HealthSentinel / MediSentinel</h3>
+          <p>Medical diagnostic support (X-ray, CT, ultrasound), outbreak prediction & telemedicine. Deployed in 2 major hospitals + rural clinics in Namibia.</p>
+          <span style="color:#22c55e;">↑ 40% faster triage</span>
+        </div>
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-database"></i></div>
+          <h3>GeoProbe AI</h3>
+          <p>Satellite + drone AI imaging for mineral exploration. Identified 3 high-value mineral zones in 2025. Predictive geology for mining giants.</p>
+          <span style="color:#22c55e;">$800M target market</span>
+        </div>
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-chalkboard-user"></i></div>
+          <h3>EduCore</h3>
+          <p>Adaptive AI tutors, multilingual learning, student analytics. Tested in 2 rural schools with 100+ students, +34% engagement boost.</p>
+        </div>
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-city"></i></div>
+          <h3>Smart City AI</h3>
+          <p>Urban traffic optimization, energy grids, public safety monitoring. Predictive maintenance & citizen sentiment analysis.</p>
+        </div>
+        <div class="product-card">
+          <div class="product-icon"><i class="fas fa-brain"></i></div>
+          <h3>AGI Core Framework</h3>
+          <p>Multi-domain AGI prototype (autonomous security, mining, healthcare). 25+ foundational patents filing. Africa’s first sovereign AGI.</p>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
 
-<section>
-  <h2>Contact</h2>
-  <p>Email: your@email.com</p>
-</section>
+  <!-- Traction & Metrics with dynamic counters -->
+  <div class="container" id="traction">
+    <section>
+      <h2 class="section-title"><i class="fas fa-chart-simple"></i> Traction & Market Dominance</h2>
+      <div class="traction-grid" id="counterSection">
+        <div class="counter-item"><div class="counter-number" id="revCounter">0</div><div>Monthly Revenue (USD)</div><span style="color:#9ca3af;">Projected Q1 2025</span></div>
+        <div class="counter-item"><div class="counter-number" id="growthCounter">0</div><div>Monthly Growth %</div><span style="color:#9ca3af;">42% sustained</span></div>
+        <div class="counter-item"><div class="counter-number" id="engineersCounter">0</div><div>AI Engineers by 2026</div><span style="color:#9ca3af;">Hiring across Africa</span></div>
+        <div class="counter-item"><div class="counter-number" id="patentsCounter">0</div><div>AGI Patents Filed</div><span style="color:#9ca3af;">by 2027 target 150+</span></div>
+      </div>
+      <div style="margin-top: 50px; background: rgba(0,20,40,0.5); border-radius: 28px; padding: 28px;">
+        <h3 style="margin-bottom:15px;"><i class="fas fa-chart-line"></i> Key Highlights</h3>
+        <ul style="display: flex; flex-wrap: wrap; gap: 20px; list-style: none;">
+          <li><i class="fas fa-check-circle" style="color:#22c55e;"></i> CyberSentinel: national defense agency pilot</li>
+          <li><i class="fas fa-check-circle" style="color:#22c55e;"></i> MediSentinel live in 2 hospitals + rural Namibia</li>
+          <li><i class="fas fa-check-circle" style="color:#22c55e;"></i> GeoProbe: 3 mineral zones discovered</li>
+          <li><i class="fas fa-check-circle" style="color:#22c55e;"></i> EduCore: 100+ students, +42% literacy tracking</li>
+        </ul>
+        <div class="chart-container">
+          <canvas id="revenueChart" width="400" height="200" style="width:100%; max-height:250px"></canvas>
+          <p style="text-align:center; font-size:0.8rem;">Projected Annual Revenue ($M) · 2025–2030</p>
+        </div>
+      </div>
+    </section>
+  </div>
 
-<footer>
-  © 2026 LeadAI — Future is Now
-</footer>
+  <!-- Market Opportunity + China-Africa Bridge -->
+  <div class="container">
+    <section>
+      <h2 class="section-title"><i class="fas fa-globe"></i> Market Opportunity & China-Africa Synergy</h2>
+      <div class="grid-3">
+        <div class="product-card"><i class="fas fa-chart-pie" style="font-size:2rem;"></i><h3>TAM: $500B+</h3><p>Total addressable market across AI in defense, mining, healthcare, smart cities in Africa by 2030.</p></div>
+        <div class="product-card"><i class="fas fa-handshake"></i><h3>SAM: $300B</h3><p>Serviceable market with government contracts and enterprise AI transformation.</p></div>
+        <div class="product-card"><i class="fas fa-flag-checkered"></i><h3>China-Africa Bridge</h3><p>Collaboration with Chinese research institutions & Nanchang University → AI talent + infrastructure.</p></div>
+      </div>
+      <div style="margin-top: 40px; background: linear-gradient(145deg, #0a142e, #020617); border-radius: 28px; padding: 28px; border-left: 5px solid #3b82f6;">
+        <p style="font-size:1.2rem;">🏆 <strong>LeadAI’s AGI Vision:</strong> $5B Annual Revenue by 2030 | 25% African AI Market Share | 150+ Global Patents</p>
+        <p>📍 Pilot country: Namibia → Expansion to South Africa, DRC, Nigeria, Kenya. Backed by Z Generation China-Africa Initiative.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Roadmap & Funding -->
+  <div class="container" id="roadmap">
+    <section>
+      <h2 class="section-title"><i class="fas fa-road"></i> Strategic Roadmap & Series A</h2>
+      <div class="grid-3">
+        <div class="product-card"><i class="fas fa-flask"></i><h3>2025-2026: AGI Prototype</h3><p>Functional AGI for cybersecurity, mining & health. Filed 25+ patents. $20M Series A fundraise.</p></div>
+        <div class="product-card"><i class="fas fa-rocket"></i><h3>2027: Regional Expansion</h3><p>Operations in 5+ countries, $10M+ contracts, LeadAI Academy launched.</p></div>
+        <div class="product-card"><i class="fas fa-chart-line"></i><h3>2028+ : Global Scale</h3><p>$100M+ revenue, Smart City integration, Quantum AI R&D, IPO readiness.</p></div>
+      </div>
+      <div style="margin-top: 30px; background: rgba(59,130,246,0.1); border-radius: 24px; padding: 22px;">
+        <h3><i class="fas fa-dollar-sign"></i> Series A Funding Use ($20M)</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+          <span style="background:#1e293b; padding: 8px 18px; border-radius:40px;">💰 AI Infrastructure: $8M (H100 clusters, edge)</span>
+          <span style="background:#1e293b; padding: 8px 18px; border-radius:40px;">🧠 Talent: $6M (200+ engineers)</span>
+          <span style="background:#1e293b; padding: 8px 18px; border-radius:40px;">🤝 Strategic Partnerships: $4M</span>
+          <span style="background:#1e293b; padding: 8px 18px; border-radius:40px;">⚖️ Legal & Patents: $2M</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Team Management -->
+  <div class="container" id="team">
+    <section>
+      <h2 class="section-title"><i class="fas fa-users"></i> Executive Leadership</h2>
+      <div class="grid-3">
+        <div class="team-card">
+          <div class="avatar-icon"><i class="fas fa-user-astronaut"></i></div>
+          <h3>Amukana Fidel Treasure</h3>
+          <p>Founder & Chief Visionary</p>
+          <p style="font-size:0.85rem; color:#94a3b8;">Nanchang University, China-Africa AI Architect, Z Generation Leader</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Hileni Mushisheni Haushona</h3>
+          <p>Chief Executive Officer</p>
+          <p style="font-size:0.85rem; color:#94a3b8;">Operational scale, African market expansion, strategic alliances</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-icon"><i class="fas fa-microchip"></i></div>
+          <h3>AI Research Council</h3>
+          <p>50+ researchers & engineers</p>
+          <p style="font-size:0.85rem;">Nairobi, Windhoek, Beijing collaboration hubs</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Contact & Social Impact -->
+  <div class="container" id="contact">
+    <section>
+      <h2 class="section-title"><i class="fas fa-leaf"></i> Social Impact & Partnership</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+        <div><i class="fas fa-heartbeat" style="color:#22c55e;"></i> Improved healthcare access for 500k+ rural citizens by 2027</div>
+        <div><i class="fas fa-graduation-cap"></i> LeadAI Academy: 10k African AI talents trained by 2030</div>
+        <div><i class="fas fa-hand-holding-usd"></i> Data sovereignty & local infrastructure for 12 nations</div>
+      </div>
+      <div style="margin-top: 50px; text-align: center; background: rgba(0,20,40,0.6); border-radius: 28px; padding: 35px;">
+        <h3>Connect with LeadAI</h3>
+        <p><i class="fas fa-envelope"></i> amukanafidetl@gmail.com &nbsp;|&nbsp; <i class="fab fa-twitter"></i> @leadai &nbsp;|&nbsp; <i class="fas fa-phone-alt"></i> +86 186 7963 4154</p>
+        <p style="margin-top: 20px;">Headquarters: Windhoek, Namibia | R&D: Nanchang, China</p>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <p>© 2026 LeadAI (Pty) Ltd — Building Africa’s Sovereign AGI Infrastructure | Leading Africa to SOTA AI</p>
+  </footer>
+</main>
 
 <script>
-/* Scroll animation */
-const sections = document.querySelectorAll("section");
-window.addEventListener("scroll", () => {
-  sections.forEach(sec => {
-    if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
-      sec.classList.add("visible");
+  // ========== 1) Enhanced Particle Network with Mouse Attraction ==========
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let particlesArray = [];
+  let mouse = { x: null, y: null, radius: 150 };
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+
+  class Particle {
+    constructor(x, y, dx, dy, size, color) {
+      this.x = x;
+      this.y = y;
+      this.dx = dx;
+      this.dy = dy;
+      this.size = size;
+      this.color = color;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+    update() {
+      // mouse attraction effect
+      if (mouse.x && mouse.y) {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < mouse.radius) {
+          let force = (mouse.radius - dist) / mouse.radius;
+          let angle = Math.atan2(dy, dx);
+          let moveX = Math.cos(angle) * force * 1.2;
+          let moveY = Math.sin(angle) * force * 1.2;
+          this.x += moveX;
+          this.y += moveY;
+        }
+      }
+      this.x += this.dx;
+      this.y += this.dy;
+      if (this.x < 0 || this.x > width) this.dx *= -1;
+      if (this.y < 0 || this.y > height) this.dy *= -1;
+      this.draw();
+    }
+  }
+
+  function initParticles() {
+    particlesArray = [];
+    let numberOfParticles = 110;
+    for (let i = 0; i < numberOfParticles; i++) {
+      let size = Math.random() * 2 + 0.8;
+      let x = Math.random() * width;
+      let y = Math.random() * height;
+      let dx = (Math.random() - 0.5) * 0.5;
+      let dy = (Math.random() - 0.5) * 0.5;
+      let color = `rgba(59, 130, 246, ${Math.random() * 0.6 + 0.2})`;
+      particlesArray.push(new Particle(x, y, dx, dy, size, color));
+    }
+  }
+
+  function drawLines() {
+    for (let i = 0; i < particlesArray.length; i++) {
+      for (let j = i + 1; j < particlesArray.length; j++) {
+        let dx = particlesArray[i].x - particlesArray[j].x;
+        let dy = particlesArray[i].y - particlesArray[j].y;
+        let distance = Math.hypot(dx, dy);
+        if (distance < 100) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(59, 130, 246, ${0.2 - distance / 500})`;
+          ctx.lineWidth = 0.6;
+          ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+          ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, width, height);
+    for (let p of particlesArray) {
+      p.update();
+    }
+    drawLines();
+    requestAnimationFrame(animateParticles);
+  }
+
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    initParticles();
+  }
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+  });
+  resizeCanvas();
+  animateParticles();
+
+  // ========== 2) Typing Animation ==========
+  const phrases = ["AGI for Africa 🌍", "AI Mineral Exploration ⛏️", "Autonomous Cyber Defense 🛡️", "Smart Healthcare for All 🏥", "China-Africa Innovation Bridge 🤝"];
+  let idx = 0, charIdx = 0;
+  const typedSpan = document.getElementById('typedLine');
+  function typeEffect() {
+    if (charIdx < phrases[idx].length) {
+      typedSpan.innerHTML += phrases[idx].charAt(charIdx);
+      charIdx++;
+      setTimeout(typeEffect, 100);
+    } else {
+      setTimeout(() => {
+        eraseEffect();
+      }, 2000);
+    }
+  }
+  function eraseEffect() {
+    if (charIdx > 0) {
+      typedSpan.innerHTML = phrases[idx].substring(0, charIdx - 1);
+      charIdx--;
+      setTimeout(eraseEffect, 50);
+    } else {
+      idx = (idx + 1) % phrases.length;
+      setTimeout(typeEffect, 300);
+    }
+  }
+  typeEffect();
+
+  // ========== 3) Intersection Observer Counters ==========
+  const counters = [
+    { id: 'revCounter', target: 1.2, suffix: 'M', isFloat: true, val: 0 },
+    { id: 'growthCounter', target: 42, suffix: '%', isFloat: false, val: 0 },
+    { id: 'engineersCounter', target: 200, suffix: '+', isFloat: false, val: 0 },
+    { id: 'patentsCounter', target: 25, suffix: '+', isFloat: false, val: 0 }
+  ];
+  let animated = false;
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !animated) {
+      animated = true;
+      counters.forEach(c => {
+        let current = 0;
+        let step = Math.ceil(c.target / 40);
+        let interval = setInterval(() => {
+          if (c.isFloat) {
+            current += 0.05;
+            if (current >= c.target) {
+              document.getElementById(c.id).innerHTML = c.target + c.suffix;
+              clearInterval(interval);
+            } else {
+              document.getElementById(c.id).innerHTML = current.toFixed(1) + c.suffix;
+            }
+          } else {
+            current += step;
+            if (current >= c.target) {
+              document.getElementById(c.id).innerHTML = c.target + c.suffix;
+              clearInterval(interval);
+            } else {
+              document.getElementById(c.id).innerHTML = current + c.suffix;
+            }
+          }
+        }, 25);
+      });
+    }
+  }, { threshold: 0.4 });
+  const counterSection = document.getElementById('counterSection');
+  if (counterSection) observer.observe(counterSection);
+
+  // ========== 4) Chart.js Revenue Projection (2025-2030) ==========
+  const ctxChart = document.getElementById('revenueChart').getContext('2d');
+  new Chart(ctxChart, {
+    type: 'line',
+    data: {
+      labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+      datasets: [{
+        label: 'Annual Revenue ($M)',
+        data: [8, 42, 135, 420, 1850, 5000],
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: '#22c55e',
+        pointBorderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { labels: { color: '#cbd5e6' } } },
+      scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, x: { ticks: { color: '#94a3b8' } } }
     }
   });
-});
 
-/* PARTICLES */
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for (let i = 0; i < 80; i++) {
-  particles.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 2,
-    dx: (Math.random() - 0.5),
-    dy: (Math.random() - 0.5)
+  // ========== 5) Mobile Menu Toggle ==========
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const navLinksDiv = document.getElementById('navLinks');
+  mobileBtn.addEventListener('click', () => {
+    navLinksDiv.classList.toggle('mobile-open');
   });
-}
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  particles.forEach(p => {
-    p.x += p.dx;
-    p.y += p.dy;
-
-    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = "#3b82f6";
-    ctx.fill();
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinksDiv.classList.remove('mobile-open');
+    });
   });
 
-  requestAnimationFrame(animate);
-}
-
-animate();
+  // Scroll reveal for sections
+  const revealSections = document.querySelectorAll('section');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  revealSections.forEach(sec => {
+    sec.style.opacity = '0';
+    sec.style.transform = 'translateY(30px)';
+    sec.style.transition = 'opacity 0.7s ease, transform 0.6s ease';
+    revealObserver.observe(sec);
+  });
 </script>
-
 </body>
 </html>
