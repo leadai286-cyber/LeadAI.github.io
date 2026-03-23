@@ -1,22 +1,254 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Personal Website</title>
+<meta charset="UTF-8">
+<title>LeadAI | The Future of Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+body {
+  background: #020617;
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+/* PARTICLE CANVAS */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+  background: rgba(2,6,23,0.6);
+}
+
+nav h1 {
+  color: #3b82f6;
+}
+
+nav a {
+  color: #94a3b8;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: white;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 160px 20px;
+}
+
+.hero h1 {
+  font-size: 56px;
+  background: linear-gradient(90deg, #3b82f6, #22c55e, #a855f7);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  margin-top: 20px;
+  color: #94a3b8;
+}
+
+.btn {
+  margin-top: 30px;
+  display: inline-block;
+  padding: 14px 30px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #3b82f6, #22c55e);
+  text-decoration: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #3b82f6;
+}
+
+/* SECTIONS */
+section {
+  padding: 100px 20px;
+  max-width: 1000px;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 1s;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* CARDS */
+.grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  background: rgba(15,23,42,0.6);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #1e293b;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+  border-color: #3b82f6;
+  box-shadow: 0 0 40px rgba(59,130,246,0.4);
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 50px;
+  color: #64748b;
+}
+</style>
 </head>
-<body style="font-family: Arial; text-align: center; padding: 50px;">
 
-  <h1>Your Name</h1>
-  <p>Building the future with AI, one idea at a time.</p>
+<body>
 
-  <h2>About Me</h2>
-  <p>I am a student interested in technology, AI, and entrepreneurship. 
-  I am currently working on ideas like LeadAI.</p>
+<canvas id="particles"></canvas>
 
+<nav>
+  <h1>LeadAI</h1>
+  <div>
+    <a href="#about">About</a>
+    <a href="#vision">Vision</a>
+    <a href="#projects">Projects</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Engineering the Future of AI</h1>
+  <p>LeadAI is building next-generation intelligence systems for global impact.</p>
+  <a href="#about" class="btn">Enter</a>
+</div>
+
+<section id="about">
+  <h2>About</h2>
+  <p>
+    LeadAI is a bold initiative focused on artificial intelligence, innovation,
+    and the future of technology. Built from vision and ambition, it represents
+    the next wave of intelligent systems.
+  </p>
+</section>
+
+<section id="vision">
+  <h2>Vision</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>AI Innovation</h3>
+      <p>Advancing artificial intelligence beyond current limits.</p>
+    </div>
+    <div class="card">
+      <h3>Global Impact</h3>
+      <p>Solving real-world problems through intelligent systems.</p>
+    </div>
+    <div class="card">
+      <h3>Future Systems</h3>
+      <p>Designing scalable AI infrastructure for tomorrow.</p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
   <h2>Projects</h2>
-  <p><strong>LeadAI:</strong> A concept for AI infrastructure and innovation.</p>
+  <div class="card">
+    <h3>LeadAI Platform</h3>
+    <p>A conceptual AI ecosystem for innovation and development.</p>
+  </div>
+</section>
 
+<section>
   <h2>Contact</h2>
   <p>Email: your@email.com</p>
+</section>
+
+<footer>
+  © 2026 LeadAI — Future is Now
+</footer>
+
+<script>
+/* Scroll animation */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+  sections.forEach(sec => {
+    if (sec.getBoundingClientRect().top < window.innerHeight - 100) {
+      sec.classList.add("visible");
+    }
+  });
+});
+
+/* PARTICLES */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2,
+    dx: (Math.random() - 0.5),
+    dy: (Math.random() - 0.5)
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    p.x += p.dx;
+    p.y += p.dy;
+
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#3b82f6";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
 
 </body>
 </html>
